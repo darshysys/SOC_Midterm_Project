@@ -16,4 +16,21 @@ fig, axes = plt.subplots(4,4,sharex=True,sharey=True,figsize=(8,10))
 faceimages = list(faces.values())[-16:] # take last 16 images
 for i in range(16):
     axes[i%4][i//4].imshow(faceimages[i], cmap="gray")
+print("Showing sample faces")
 plt.show()
+
+classes = set(filename.split("/")[0] for filename in faces.keys())
+print("Number of classes:", len(classes))
+print("Number of images:", len(faces))
+ 
+# Take classes 1-39 for eigenfaces, keep entire class 40 and
+# image 10 of class 39 as out-of-sample test
+facematrix = []
+facelabel = []
+for key,val in faces.items():
+    if key.startswith("s40/"):
+        continue # this is our test set
+    if key == "s39/10.pgm":
+        continue # this is our test set
+    facematrix.append(val.flatten())
+    facelabel.append(key.split("/")[0])
