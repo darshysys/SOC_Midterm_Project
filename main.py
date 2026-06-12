@@ -34,3 +34,19 @@ for key,val in faces.items():
         continue # this is our test set
     facematrix.append(val.flatten())
     facelabel.append(key.split("/")[0])
+
+# Create a NxM matrix with N images and M pixels per image
+facematrix = np.array(facematrix)
+ 
+# Apply PCA and take first K principal components as eigenfaces
+pca = PCA().fit(facematrix)
+ 
+n_components = 50
+eigenfaces = pca.components_[:n_components]
+ 
+# Show the first 16 eigenfaces
+fig, axes = plt.subplots(4,4,sharex=True,sharey=True,figsize=(8,10))
+for i in range(16):
+    axes[i%4][i//4].imshow(eigenfaces[i].reshape(faceshape), cmap="gray")
+print("Showing the eigenfaces")
+plt.show()
